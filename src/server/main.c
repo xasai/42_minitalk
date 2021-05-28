@@ -2,6 +2,5 @@
 
 int main(void)
 {
-	printf("I'ma server\n");
-	return (0);
+	return (run_server());
 }

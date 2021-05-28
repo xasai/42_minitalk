@@ -3,4 +3,12 @@
 
 # include "minitalk.h"
 
+int		run_server();
+
+/*	auxillary.c */
+void	putchar_fd(char c, int fd);
+void	putnbr_fd(int n, int fd);
+void	putstr_fd(char *str, int fd);
+size_t	ft_strlen(const char *str);
+
 #endif /* MINISERVER_H */
