@@ -29,27 +29,27 @@ CFLAGS := -g3 -Wall -Wextra -Werror --std=c99# 			#/ ____|  / ____|  / ____|
 all: $(NAME)
 
 $(NAME): $(OBJPATH) $(SERVER_OBJ) $(CLIENT_OBJ)
-	mkdir -p $(BIN_DIR)
+	@mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) $(INC) $(CLIENT_OBJ) -o bin/$(CLIENT)
 	@echo "\n\e[0;32mbin/$(CLIENT) [Compiled +++] \e[0m\n"
 	$(CC) $(CFLAGS) $(INC) $(SERVER_OBJ) -o bin/$(SERVER)
 	@echo "\n\e[0;32mbin/$(SERVER) [Compiled +++] \e[0m\n"
 
 $(OBJPATH)/%.o: %.c
-	@echo -n "\e[0;32m"
+	@echo -n "\e[0;32m+ "
 	$(CC) $(INC) $(CFLAGS) -c $< -o $@
-	@echo -n "\e[0m"
+	@echo "\e[0m"
 
 $(OBJPATH):
 	@mkdir -p $(OBJDIR)
 
 clean:
-	@echo -n "\e[0;31m"
+	@echo -n "\e[0;31m- "
 	rm -rf $(OBJPATH)
 	@echo -n "\e[0m"
 
 fclean: clean
-	@echo -n "\e[0;31m"
+	@echo -n "\e[0;31m- "
 	rm -rf $(BIN_DIR) 
 	@echo -n "\e[0m"
 
