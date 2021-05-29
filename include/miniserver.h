@@ -3,7 +3,9 @@
 
 # include "minitalk.h"
 
-int		run_server();
+int		run_server(void);
+void	set_catcher(void);
+void	sig_catcher(int signum);
 
 /*	auxillary.c */
 void	putchar_fd(char c, int fd);

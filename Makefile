@@ -1,26 +1,23 @@
 ##########################################################################################
-NAME := bin/server bin/client
+NAME := minitalk 
 
 VPATH := ./src
 OBJPATH := ./obj
-BIN_DIR := ./bin/
+BINPATH := ./bin
 OBJDIR := $(subst $(VPATH), $(OBJPATH), $(shell find $(VPATH) -type d))
-INC := -Iinclude/
 
-SERVER := server
-SERVER_PATH := $(VPATH)/$(SERVER)
-SERVER_SRC := $(shell find $(SERVER_PATH) -name *.c)
+SERVER := $(BINPATH)/server
+SERVER_SRC := $(shell find ./src/server -name *.c)
 SERVER_OBJ := $(subst $(VPATH), $(OBJPATH), $(SERVER_SRC:.c=.o))
 
-CLIENT := client
-CLIENT_PATH := $(VPATH)/$(CLIENT)
-CLIENT_SRC := $(shell find $(CLIENT_PATH) -name *.c)
+CLIENT := $(BINPATH)/client
+CLIENT_SRC := $(shell find ./src/client -name *.c)
 CLIENT_OBJ := $(subst $(VPATH), $(OBJPATH), $(CLIENT_SRC:.c=.o))
 
 ############################################################################################
 CC := gcc#	 											  #_____    _____    _____ 
-CFLAGS := -g3 -Wall -Wextra -Werror --std=c99# 			#/ ____|  / ____|  / ____|
-														#| |  __  | |      | |     
+CFLAGS := -g3 -Wall -Wextra -Werror #--std=gnu99#		#/ ____|  / ____|  / ____
+INC := -Iinclude#										#| |  __  | |      | |     
 														#| | |_ | | |      | |     
 														#| |__| | | |____  | |____ 
 														 #\_____|  \____|  \_____|
@@ -28,12 +25,15 @@ CFLAGS := -g3 -Wall -Wextra -Werror --std=c99# 			#/ ____|  / ____|  / ____|
 
 all: $(NAME)
 
-$(NAME): $(OBJPATH) $(SERVER_OBJ) $(CLIENT_OBJ)
-	@mkdir -p $(BIN_DIR)
-	$(CC) $(CFLAGS) $(INC) $(CLIENT_OBJ) -o bin/$(CLIENT)
-	@echo "\n\e[0;32mbin/$(CLIENT) [Compiled +++] \e[0m\n"
-	$(CC) $(CFLAGS) $(INC) $(SERVER_OBJ) -o bin/$(SERVER)
-	@echo "\n\e[0;32mbin/$(SERVER) [Compiled +++] \e[0m\n"
+$(NAME): $(OBJPATH) $(BINPATH) $(SERVER) $(CLIENT) 
+
+$(CLIENT): $(CLIENT_OBJ)
+	$(CC) $(CFLAGS) $(INC) $(CLIENT_OBJ) -o $(CLIENT)
+	@echo "\n\e[0;32m$(CLIENT) [Compiled +++] \e[0m\n"
+
+$(SERVER): $(SERVER_OBJ)
+	$(CC) $(CFLAGS) $(INC) $(SERVER_OBJ) -o $(SERVER)
+	@echo "\n\e[0;32m$(SERVER) [Compiled +++] \e[0m\n"
 
 $(OBJPATH)/%.o: %.c
 	@echo -n "\e[0;32m+ "
@@ -43,6 +43,9 @@ $(OBJPATH)/%.o: %.c
 $(OBJPATH):
 	@mkdir -p $(OBJDIR)
 
+$(BINPATH):
+	@mkdir -p $(BINPATH)
+
 clean:
 	@echo -n "\e[0;31m- "
 	rm -rf $(OBJPATH)
@@ -50,7 +53,7 @@ clean:
 
 fclean: clean
 	@echo -n "\e[0;31m- "
-	rm -rf $(BIN_DIR) 
+	rm -rf $(BINPATH) 
 	@echo -n "\e[0m"
 
 re: fclean all
@@ -59,10 +62,12 @@ re: fclean all
 
 ############################################################################################
 echo:
+	@echo $(OBJPATH) 
+	@echo $(BINPATH) 
 	@echo $(SERVER_OBJ)
 	@echo $(CLIENT_OBJ)
 
-est: $(NAME) 
+test: $(NAME) 
 	./$(NAME)
 
 val: $(NAME)

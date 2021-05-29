@@ -3,8 +3,9 @@
 
 # include <stdio.h> /* FIXME */
 
-# include <unistd.h> /* getpid() */
-# include <sys/types.h> /* pid_t */
+# include <unistd.h> 
+# include <sys/types.h> 
 # include <stdlib.h>	
+# include <signal.h>
 
 #endif /* MINITALK_H */
