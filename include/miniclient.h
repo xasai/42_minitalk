@@ -3,10 +3,10 @@
 
 # include "minitalk.h"
 
-
 void	mini_request(int ac, char **av);
 void	handle_args(int ac, char **av);
 void	send_string(int pid, char *str);
+void	send_char(int pid, unsigned char c);
 
 int		ft_atoi(const char *nptr);
 int		ft_isdigit(int c);
