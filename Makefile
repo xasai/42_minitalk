@@ -16,7 +16,7 @@ CLIENT_OBJ := $(subst $(VPATH), $(OBJPATH), $(CLIENT_SRC:.c=.o))
 
 ############################################################################################
 CC := gcc#	 											  #_____    _____    _____ 
-CFLAGS := -g3 -Wall -Wextra -Werror #--std=gnu99#		#/ ____|  / ____|  / ____
+CFLAGS := -O3 -Wall -Wextra -Werror #--std=gnu99#		#/ ____|  / ____|  / ____
 INC := -Iinclude#										#| |  __  | |      | |     
 														#| | |_ | | |      | |     
 														#| |__| | | |____  | |____ 

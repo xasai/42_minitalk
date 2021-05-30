@@ -31,3 +31,13 @@ int	ft_isspace(int c)
 {
 	return ((c > 8 && c < 14) || c == 32);
 }
+
+size_t	ft_strlen(const char *s)
+{
+	const char	*p;
+
+	p = s;
+	while (*(p++))
+		;
+	return (p - 1 - s);
+}

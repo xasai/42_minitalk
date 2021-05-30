@@ -9,6 +9,7 @@ void	mini_request(int ac, char **av)
 	pid = ft_atoi(av[1]);
 	while (++i < ac)
 	{
+		send_strlen(pid, av[i]);
 		send_string(pid, av[i]);
 	}
 }
@@ -29,16 +30,34 @@ void	send_string(int pid, char *str)
 void	send_char(int pid, unsigned char c)
 {
 	unsigned char	mask;
-	int				signum;
 
 	mask = 0x01;
 	while (mask != 0x80)
 	{
-		signum = SIGUSR2;
 		if (mask & c)
-			signum = SIGUSR1;
-		kill(pid, signum);
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
 		mask = (mask << 1);
-		usleep(1000);
+		usleep(100);
+	}
+	usleep(500);
+}
+
+void	send_strlen(int pid, char *str)
+{
+	unsigned short	len;
+	unsigned short	mask; 
+
+	len = ft_strlen(str);
+	mask = 0x0001;
+	while (mask & 0xffff)
+	{
+		if (mask & len)
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		mask = (mask << 1);
+		usleep(100);
 	}
 }
