@@ -1,63 +1,76 @@
 #include "miniclient.h"
 
-void	mini_request(int ac, char **av)
-{
-	int	i;
-	int	pid;
+static	sig_atomic_t g_ack;
 
-	i = 1;
-	pid = ft_atoi(av[1]);
-	while (++i < ac)
-	{
-		send_strlen(pid, av[i]);
-		send_string(pid, av[i]);
-	}
+/* receiving ack via signal handler _ack */
+static void	_ack(int signum)
+{
+	g_ack = true;
+	//write(1, "ack\n", 4);
+	(void)signum;	
 }
 
-void	send_string(int pid, char *str)
+/* establishing sigaction for ack packer */
+static void _set_sigaction(int signum)
 {
-	size_t	i;
+	struct sigaction sa;
 
-	i = 0;
-	while (str[i])
-	{
-		send_char(pid, str[i]);
-		i++;
-	}
-	send_char(pid, '\0');
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = _ack;
+	sigaction(signum, &sa, NULL);
 }
 
-void	send_char(int pid, unsigned char c)
+/*here we send signal and waiting for acknoledgment from server*/
+void	kill_wrapper(int pid, int signal)
 {
-	unsigned char	mask;
+	int		sleep_time;
+	int		max_sleep;
 
-	mask = 0x01;
-	while (mask != 0x80)
+	sleep_time = 0;
+	max_sleep = 10;
+	//write(1, "send\n", 5);
+	if (kill(pid, signal) == -1)
+		 _exit_error("ERROR: Can't send data to server.\n");
+	while (g_ack != true)
 	{
-		if (mask & c)
-			kill(pid, SIGUSR1);
+		if (max_sleep > 10000)
+			_exit_error("ERROR: Timeout!\n");
+		else if (sleep_time > max_sleep)
+		{
+			//write(1, "send\n", 5);
+			max_sleep += 10;
+			if (kill(pid, signal) == -1)
+				 _exit_error("ERROR: Can't send data to server.\n");
+		}
 		else
-			kill(pid, SIGUSR2);
-		mask = (mask << 1);
-		usleep(100);
+		{
+			//write(1, "wait\n", 5);
+			usleep(100);
+		}
+		sleep_time += 1;
 	}
-	usleep(500);
+	usleep(200);
+	g_ack = false;
+	return ;
 }
 
-void	send_strlen(int pid, char *str)
+void	mini_request(char **av)
 {
-	unsigned short	len;
-	unsigned short	mask; 
+	int		len;
+	int		server_pid;
+	int		cli_pid;
+	char	*str;
 
+	g_ack = false;
+	str = av[2];
 	len = ft_strlen(str);
-	mask = 0x0001;
-	while (mask & 0xffff)
-	{
-		if (mask & len)
-			kill(pid, SIGUSR1);
-		else
-			kill(pid, SIGUSR2);
-		mask = (mask << 1);
-		usleep(100);
-	}
+	server_pid = ft_atoi(av[1]);
+	cli_pid = getpid();
+	printf("PID %d\n",cli_pid);
+	_set_sigaction(SIGUSR1);
+	send_pid(server_pid, cli_pid);
+	send_int(server_pid, len);
+	send_string(server_pid, str);
+	send_char(server_pid, EOT);
 }

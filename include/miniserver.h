@@ -3,10 +3,21 @@
 
 # include "minitalk.h"
 
-int		run_server(void);
-void	set_catcher(void (*sig_catcher)(int));
-void	len_catcher(int signum);
-void	char_catcher(int signum);
+typedef struct	s_data
+{
+	bool		stage_pid;
+	bool		stage_len;	
+	bool		stage_str;
+	int			client_pid;
+	char		*str;
+}				t_data;
+
+/*	main.c		*/
+void	_exit_error(char *message);
+void	_send_ack(int pid);
+
+/*	server.c	*/
+void	run_server(void);
 
 /*	auxillary.c */
 void	putchar_fd(char c, int fd);

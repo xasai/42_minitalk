@@ -3,24 +3,25 @@ NAME := minitalk
 
 VPATH := ./src
 OBJPATH := ./obj
-BINPATH := ./bin
+INPATH := ./bin/
 OBJDIR := $(subst $(VPATH), $(OBJPATH), $(shell find $(VPATH) -type d))
 
-SERVER := $(BINPATH)/server
+SERVER := $(BINPATH)server
 SERVER_SRC := $(shell find ./src/server -name *.c)
 SERVER_OBJ := $(subst $(VPATH), $(OBJPATH), $(SERVER_SRC:.c=.o))
 
-CLIENT := $(BINPATH)/client
+CLIENT := $(BINPATH)client
 CLIENT_SRC := $(shell find ./src/client -name *.c)
 CLIENT_OBJ := $(subst $(VPATH), $(OBJPATH), $(CLIENT_SRC:.c=.o))
 
 ############################################################################################
 CC := gcc#	 											  #_____    _____    _____ 
-CFLAGS := -O3 -Wall -Wextra -Werror #--std=gnu99#		#/ ____|  / ____|  / ____
+														#/ ____|  / ____|  / ____
 INC := -Iinclude#										#| |  __  | |      | |     
 														#| | |_ | | |      | |     
 														#| |__| | | |____  | |____ 
 														 #\_____|  \____|  \_____|
+CFLAGS := -O3 -Wall -Wextra -Werror -fsanitize=address #std=gnu99#
 ############################################################################################
 
 all: $(NAME)
@@ -53,7 +54,7 @@ clean:
 
 fclean: clean
 	@echo -n "\e[0;31m- "
-	rm -rf $(BINPATH) 
+	rm -rf $(SERVER) $(CLIENT) $(BINPATH) 
 	@echo -n "\e[0m"
 
 re: fclean all

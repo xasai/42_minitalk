@@ -3,12 +3,21 @@
 
 # include "minitalk.h"
 
-void	mini_request(int ac, char **av);
-void	handle_args(int ac, char **av);
-void	send_string(int pid, char *str);
-void	send_char(int pid, unsigned char c);
-void	send_strlen(int pid, char *str);
+/*	main.c		*/
+void	_exit_error(const char *message);
 
+/*	request.c	*/
+
+void	kill_wrapper(int pid, int signal);
+void	mini_request(char **av);
+
+/*	send_data	*/
+void	send_string(int pid, char *str);
+void	send_char(int pid, char c);
+void	send_int(int pid, int num);
+void	send_pid(int pid, int mypid);
+
+/*	auxillary.c	*/
 int		ft_atoi(const char *nptr);
 int		ft_isdigit(int c);
 int		ft_isspace(int c);
