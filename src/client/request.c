@@ -47,6 +47,7 @@ void	kill_wrapper(int pid, int signal)
 	g_ack = false;
 }
 
+/* Its main function of client programm	*/
 void	mini_request(char **av)
 {
 	int		len;
@@ -64,5 +65,6 @@ void	mini_request(char **av)
 	send_int(server_pid, len);
 	send_string(server_pid, str);
 	send_char(server_pid, EOT);
-	putstr_fd("String successfully send to server!");
+	putstr_fd("\e[0;32mString successfully delivered to server!\e[0;m\n"\
+	, STDOUT_FILENO);
 }
