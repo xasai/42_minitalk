@@ -3,7 +3,7 @@
 
 # include "minitalk.h"
 
-typedef struct	s_data
+typedef struct s_data
 {
 	bool		stage_pid;
 	bool		stage_len;	

@@ -1,9 +1,7 @@
 #ifndef MINITALK_H
 # define MINITALK_H
 
-#define EOT '\004'
-
-# include <stdio.h> /* FIXME */
+# define EOT '\004'
 
 # include <unistd.h> 
 # include <sys/types.h> 

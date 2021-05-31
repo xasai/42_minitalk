@@ -17,16 +17,10 @@ static void	str_catcher(int signum)
 
 	_send_ack(g_data.client_pid);
 	if (signum == SIGUSR1)
-	{
 		chr |= mask;
-		//write(1, "1", 1);
-	}
-//	else
-//		write(1, "0", 1);
 	mask = mask << 1;
 	if (mask == 0x80)
 	{
-	//	putchar_fd(chr, 1);
 		g_data.str[i] = chr;
 		if (g_data.str[i] == EOT)
 		{
@@ -49,35 +43,35 @@ static void	str_catcher(int signum)
 **	in size variable.
 **	When its fully stored, allocate string g_data.str.
 **
-**	Sending SIGUSR1 to g_data.client_pid as acknowledgment.
+**	Sending SIGUSR1 to client_pid as acknowledgment.
 */
 static void	len_catcher(int signum)
 {
-	static long long int mask = 1;
-	static size_t		 size = 0;
+	static long long int	mask = 1;
+	static size_t			size = 0;
 
-	
 	_send_ack(g_data.client_pid);
 	if (signum == SIGUSR1)
 		size |= mask;
 	mask = mask << 1;
-//	if (g_data.stage_str == true)
-//	{
-//		write(1, "HERE\n", 6);
-//	}
 	if (mask & 0x100000000)
 	{
-//		printf("SIZE = %ld\n", size);
 		g_data.str = malloc(sizeof(*g_data.str) * (size + 1));
 		if (!g_data.str)
 			exit(EXIT_FAILURE);
 		mask = 1;
 		size = 0;
 		g_data.stage_str = true;
-
 	}
 }
 
+/*
+** DESCRIPTION:
+**	This function collect bits one by one and store it
+**	in client_pid variable.
+**
+**	This function doesn't send SIGUSR1 acknowledgment,
+*/
 static void	pid_catcher(int signum)
 {
 	static unsigned int	mask = 1;
@@ -94,11 +88,11 @@ static void	pid_catcher(int signum)
 
 /*
 ** DESCRIPTION:
-**	This function set 1 same handler for SIGUSR1 & SIGUSR2 signals.
+**	This function set handler int argument for SIGUSR1 & SIGUSR2 signals.
 */
 static void	set_catcher(void (*sig_catcher)(int))
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGUSR1);
@@ -128,20 +122,17 @@ void	run_server(void)
 		if (g_data.stage_pid == true)
 		{
 			set_catcher(pid_catcher);
-//			write(1, "stage 1\n", 8);
 			g_data.stage_pid = false;
 			putchar_fd('\n', STDOUT_FILENO);
 		}
 		else if (g_data.stage_len == true)
 		{
 			set_catcher(len_catcher);
-//			write(1, "stage 2\n", 8);
 			g_data.stage_len = false;
 		}
 		else if (g_data.stage_str == true)
 		{
 			set_catcher(str_catcher);
-//			write(1, "stage 3\n", 8);
 			g_data.stage_str = false;
 		}
 		usleep(1);

@@ -22,5 +22,6 @@ int		ft_atoi(const char *nptr);
 int		ft_isdigit(int c);
 int		ft_isspace(int c);
 size_t	ft_strlen(const char *str);
+void	putstr_fd(const char *str, int fd);
 
 #endif /* MINICLIENT_H */

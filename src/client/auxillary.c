@@ -41,3 +41,9 @@ size_t	ft_strlen(const char *s)
 		;
 	return (p - 1 - s);
 }
+
+void	putstr_fd(const char *s, int fd)
+{
+	if (s)
+		write(fd, s, ft_strlen(s));
+}
