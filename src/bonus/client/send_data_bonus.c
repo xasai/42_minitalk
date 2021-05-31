@@ -1,4 +1,4 @@
-#include "miniclient.h"
+#include "miniclient_bonus.h"
 
 void	send_string(int pid, char *str)
 {

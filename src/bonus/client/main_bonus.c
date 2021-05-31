@@ -1,4 +1,4 @@
-#include "miniclient.h"
+#include "miniclient_bonus.h"
 
 static void	_handle_args(int ac, char **av)
 {

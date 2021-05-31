@@ -3,7 +3,7 @@ NAME := minitalk
 
 VPATH := ./src
 OBJPATH := ./obj
-INPATH := ./bin/
+BINPATH := ./bin/
 OBJDIR := $(subst $(VPATH), $(OBJPATH), $(shell find $(VPATH) -type d))
 
 SERVER := $(BINPATH)server
@@ -14,20 +14,21 @@ CLIENT := $(BINPATH)client
 CLIENT_SRC := ./src/client/request.c ./src/client/main.c ./src/client/send_data.c ./src/client/auxillary.c
 CLIENT_OBJ := $(subst $(VPATH), $(OBJPATH), $(CLIENT_SRC:.c=.o))
 ###########################################################################################
-BONUS_CLIENT := $(CLIENT) 
+BONUS_CLIENT := $(BINPATH)bonus/client
 BONUS_CLIENT_SRC := ./src/bonus/client/request_bonus.c ./src/bonus/client/auxillary_bonus.c\
 					./src/bonus/client/main_bonus.c ./src/bonus/client/send_data_bonus.c
 BONUS_CLIENT_OBJ := $(subst $(VPATH), $(OBJPATH), $(BONUS_CLIENT_SRC:.c=.o))
 
-BONUS_SERVER := $(SERVER)
+BONUS_SERVER := $(BINPATH)bonus/server
 BONUS_SERVER_SRC := ./src/bonus/server/server_bonus.c ./src/bonus/server/auxillary_bonus.c\
 					./src/bonus/server/main_bonus.c
 BONUS_SERVER_OBJ := $(subst $(VPATH), $(OBJPATH), $(BONUS_SERVER_SRC:.c=.o))
-BONUS_HEADER := include/bonus/minitalk_bonus.h include/bonus/miniclient_bonus.h include/bonus/miniserver_bonus.h
+BONUS_HEADER := include/bonus/minitalk_bonus.h include/bonus/miniclient_bonus.h\
+				include/bonus/miniserver_bonus.h
 ############################################################################################
 CC := gcc#	 											  #_____    _____    _____ 
 														#/ ____|  / ____|  / ____
-INC := -Iinclude#										#| |  __  | |      | |     
+INC := -Iinclude -Iinclude/bonus#						#| |  __  | |      | |     
 														#| | |_ | | |      | |     
 														#| |__| | | |____  | |____ 
 														 #\_____|  \____|  \_____|
@@ -37,7 +38,7 @@ HEADER := include/minitalk.h include/miniclient.h include/miniserver.h
 
 all: $(NAME)
 
-bonus:	$(OBJPATH) $(BONUS_CLIENT)
+bonus:	$(OBJPATH) $(BINPATH) $(BONUS_HEADER) $(BONUS_CLIENT) $(BONUS_SERVER) 
 
 $(NAME): $(OBJPATH) $(BINPATH) $(SERVER) $(CLIENT) 
 
@@ -58,7 +59,7 @@ $(OBJPATH):
 	@mkdir -p $(OBJDIR)
 
 $(BINPATH):
-	@mkdir -p $(BINPATH)
+	@mkdir -p $(BINPATH) $(BINPATH)/bonus
 
 clean:
 	@echo -n "\e[0;31m- "
@@ -67,19 +68,19 @@ clean:
 
 fclean: clean
 	@echo -n "\e[0;31m- "
-	rm -rf $(SERVER) $(CLIENT) $(BINPATH) 
+	rm -rf $(BINPATH) 
 	@echo -n "\e[0m"
 
 re: fclean all
 
 .PHONY: test re fclean clean all
 
-$(BONUS_CLIENT): $(BONUS_CLIENT_OBJ) $(BONUS_HEADER) 
-	$(CC) $(CFLAGS) $(include)/bonus $(BONUS_CLIENT_OBJ) -o $(CLIENT)
+$(BONUS_CLIENT): $(BONUS_CLIENT_OBJ) 
+	$(CC) $(CFLAGS) $(INC) $(BONUS_CLIENT_OBJ) -o $(BONUS_CLIENT)
 	@echo "\n\e[0;32m$(SERVER) [Compiled +++] \e[0m\n"
 
-$(BONUS_SERVER): $(BONUS_SERVER_OBJ) $(BONUS_HEADER)
-	$(CC) $(CFLAGS) $(include)/bonus $(BONUS_SERVER_OBJ) -o $(SERVER)
+$(BONUS_SERVER): $(BONUS_SERVER_OBJ)
+	$(CC) $(CFLAGS) $(INC) $(BONUS_SERVER_OBJ) -o $(BONUS_SERVER)
 	@echo "\n\e[0;32m$(SERVER) [Compiled +++] \e[0m\n"
 ############################################################################################
 echo:

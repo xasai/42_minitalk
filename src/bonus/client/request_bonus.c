@@ -1,4 +1,4 @@
-#include "miniclient.h"
+#include "miniclient_bonus.h"
 
 static sig_atomic_t	g_ack;
 

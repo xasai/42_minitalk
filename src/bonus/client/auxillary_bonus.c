@@ -1,4 +1,4 @@
-#include "miniclient.h"
+#include "miniclient_bonus.h"
 
 int	ft_atoi(const char *nptr)
 {
