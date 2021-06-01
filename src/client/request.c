@@ -8,7 +8,6 @@ static void	_ack(int signum)
 	g_ack = true;
 	(void)signum;
 }
-
 /* establishing sigaction for ack packer */
 static void	_set_sigaction(int signum)
 {
@@ -59,6 +58,8 @@ void	mini_request(char **av)
 	str = av[2];
 	len = ft_strlen(str);
 	server_pid = ft_atoi(av[1]);
+	if (server_pid == 0)
+		_exit_error("Wrong PID 0\n");
 	cli_pid = getpid();
 	_set_sigaction(SIGUSR1);
 	send_pid(server_pid, cli_pid);
