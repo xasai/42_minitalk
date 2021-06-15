@@ -8,6 +8,7 @@ static void	_ack(int signum)
 	g_ack = true;
 	(void)signum;
 }
+
 /* establishing sigaction for ack packer */
 static void	_set_sigaction(int signum)
 {

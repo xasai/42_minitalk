@@ -4,6 +4,7 @@ static void	_handle_args(int ac, char **av)
 {
 	int			i;
 	const char	usage[] = "client: Usage: client <pid> <str1>\n";
+	const char	eot_error[] = "client: String can't contain EOT char\n";
 
 	i = 0;
 	if (ac != 3)
@@ -16,6 +17,10 @@ static void	_handle_args(int ac, char **av)
 		i++;
 	if (av[1][i])
 		_exit_error(usage);
+	i = 0;
+	while (av[2][i])
+		if (av[2][i++] == EOT)
+			_exit_error(eot_error);
 }
 
 void	_exit_error(const char *message)

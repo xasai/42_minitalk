@@ -10,7 +10,7 @@ size_t	ft_strlen(const char *s)
 	return (p - 1 - s);
 }
 
-void	putchar_fd(char c, int fd)
+inline void	putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
@@ -36,7 +36,7 @@ void	putnbr_fd(int n, int fd)
 	putnbr_fd(n % 10, fd);
 }
 
-void	putstr_fd(char *s, int fd)
+inline void	putstr_fd(char *s, int fd)
 {
 	if (s)
 		write(fd, s, ft_strlen(s));

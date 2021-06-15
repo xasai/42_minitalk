@@ -22,12 +22,12 @@ int	ft_atoi(const char *nptr)
 	return (sign * (int)num);
 }
 
-int	ft_isdigit(int c)
+inline int	ft_isdigit(int c)
 {
 	return (c <= '9' && '0' <= c);
 }
 
-int	ft_isspace(int c)
+inline int	ft_isspace(int c)
 {
 	return ((c > 8 && c < 14) || c == 32);
 }
@@ -42,7 +42,7 @@ size_t	ft_strlen(const char *s)
 	return (p - 1 - s);
 }
 
-void	putstr_fd(const char *s, int fd)
+inline void	putstr_fd(const char *s, int fd)
 {
 	if (s)
 		write(fd, s, ft_strlen(s));
