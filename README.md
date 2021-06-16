@@ -8,7 +8,7 @@ This repository about how we can transfer data beetween 2 proccess using unix si
 3)Run client via:</br>
 <code> bin/client ($pidof server) \<message by your choise> </code></br></br>
 
-# Description
+# Description </b>
 This project teach me how I can send and recieve UNIX signals.</br>
 More specifically, how we can transfer data using only 2 signals USR1 & USR2. </br>
 The only way, is to represent them as bits.
