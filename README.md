@@ -6,7 +6,7 @@ This repository about how we can transfer data beetween 2 proccess using unix si
 2)Run server via:</br>
 <code> bin/server </code></br></br>
 3)Run client via:</br>
-<code> bin/client ($pidof server) \<message by your choise> </code></br></br>
+<code> bin/client $(pidof server) \<message by your choise> </code></br></br>
 
 # Description </b>
 This project teach me how I can send and recieve UNIX signals.</br>
