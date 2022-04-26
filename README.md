@@ -1,5 +1,5 @@
 # Minitalk
-This repository about how we can transfer data beetween 2 proccess using unix signals.
+Sending messages with unix signals
 # RUN
 <b>1)Run inside repository:</br>
 <code> make </code></br></br>
